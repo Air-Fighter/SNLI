@@ -1,4 +1,3 @@
-gold_label	sentence1	sentence2
 neutral	two women are embracing while holding to go packages.	the sisters are hugging goodbye while holding to go packages after just eating lunch.
 entailment	two women are embracing while holding to go packages.	two woman are holding packages.
 contradiction	two women are embracing while holding to go packages.	the men are fighting outside a deli.
@@ -8548,8 +8547,7 @@ entailment	a man walking towards the open sea.	man is walk towards the sea.
 contradiction	a man walking towards the open sea.	man is swimming.
 entailment	a race car speeding on the track.	a race car is in movement.
 contradiction	a race car speeding on the track.	a race car has stalled along the track.
-neutral	a race car speeding on the track.	a race car is winning the race.
--	a red and white race car rounds the curve on a racing track.	two cars are having a race.
+neutral	a race car speeding on the track.	a race car is winning the race.	a red and white race car rounds the curve on a racing track.	two cars are having a race.
 neutral	a red and white race car rounds the curve on a racing track.	the cars are going around a curve and can see the finish line.
 contradiction	a red and white race car rounds the curve on a racing track.	two cars are parked in a garage.
 entailment	a lone red, white, and black race car is being driven by a single driver on a racetrack.	a car running down on racetrack
@@ -8597,8 +8595,7 @@ entailment	this man is trying to make his wife laugh by blowing bubbles in the b
 neutral	four construction workers, wearing neon vests, stand at a construction site along with some equipment.	the four construction workers are working on a high rise building.
 contradiction	four construction workers, wearing neon vests, stand at a construction site along with some equipment.	the four construction workers are taking the day off and are having a latte at a cafe.
 entailment	four construction workers, wearing neon vests, stand at a construction site along with some equipment.	the construction workers are at work.
-contradiction	a man in black is crossing the road.	he is walking on his hands.
--	a man in black is crossing the road.	the road is clear.
+contradiction	a man in black is crossing the road.	he is walking on his hands.	a man in black is crossing the road.	the road is clear.
 neutral	a man in black is crossing the road.	he is running.
 entailment	a young boy is bowling for one pin with a ball outside, while 3 other people are in the background.	a young boy is bowling.
 neutral	a young boy is bowling for one pin with a ball outside, while 3 other people are in the background.	a young boy is bowling in a tournament.
@@ -8639,8 +8636,7 @@ contradiction	a man rows a small dingy laden with green plants on a river.	a wom
 contradiction	a small boy purchases vegetables from an older man.	a girl buys sandwiches from a vendor.
 entailment	a small boy purchases vegetables from an older man.	a boy buys food.
 neutral	a small boy purchases vegetables from an older man.	a boy buys tomatoes and broccoli from a man.
-entailment	middle-aged man in jeans and dark blue t-shirt carrying a black item and walking across a lawn.	man in dark clothing walks across a lawn.
--	middle-aged man in jeans and dark blue t-shirt carrying a black item and walking across a lawn.	man sneaking across lawn with stolen item.
+entailment	middle-aged man in jeans and dark blue t-shirt carrying a black item and walking across a lawn.	man in dark clothing walks across a lawn.	middle-aged man in jeans and dark blue t-shirt carrying a black item and walking across a lawn.	man sneaking across lawn with stolen item.
 contradiction	middle-aged man in jeans and dark blue t-shirt carrying a black item and walking across a lawn.	man burying his dead dog.
 entailment	a young man with a blue hoodie sweatshirt that says new york across the front, sings into a microphone in front of a crowd of people.	the young man sings to the crowd.
 contradiction	a young man with a blue hoodie sweatshirt that says new york across the front, sings into a microphone in front of a crowd of people.	the young man is playing the drums.
@@ -8659,8 +8655,7 @@ neutral	a child in green winter clothes is holding his or her hand up while two 
 entailment	a child in green winter clothes is holding his or her hand up while two other children look at him or her.	a child is raising his or her hand.
 neutral	worker sawing a large fish with a band saw.	workers are preparing their dinner meal
 contradiction	worker sawing a large fish with a band saw.	workers are doing construction
-entailment	worker sawing a large fish with a band saw.	workers are using a tool
--	a girl carries large sacks across a backdrop of foliage.	a girl carrying sacks of body parts
+entailment	worker sawing a large fish with a band saw.	workers are using a tool	a girl carries large sacks across a backdrop of foliage.	a girl carrying sacks of body parts
 entailment	a girl carries large sacks across a backdrop of foliage.	a girl carrying sacks
 contradiction	a girl carries large sacks across a backdrop of foliage.	a girl with a sack also known as a he she
 contradiction	three people on bicycles, pedaling down the side of a road, with a jeep following them.	three people on bicycles are chasing a jeep.
@@ -8758,8 +8753,7 @@ contradiction	a racing motorcycle rider has fallen off his bike and is sliding o
 neutral	a racing motorcycle rider has fallen off his bike and is sliding on the ground while another rider is driving behind.	the rider is wearing a helmet.
 neutral	a group of kids sitting around a table while another person holds a circle blocking out light.	the kids are playing a card game.
 entailment	a group of kids sitting around a table while another person holds a circle blocking out light.	the kids are sitting at a table.
-contradiction	a group of kids sitting around a table while another person holds a circle blocking out light.	the kids are standing single file.
--	a lone motorcyclist jumping through the air in front of a large crowd.	the motor biker jumps through the crowd.
+contradiction	a group of kids sitting around a table while another person holds a circle blocking out light.	the kids are standing single file.	a lone motorcyclist jumping through the air in front of a large crowd.	the motor biker jumps through the crowd.
 neutral	a lone motorcyclist jumping through the air in front of a large crowd.	the man is wearing a helmet.
 contradiction	a lone motorcyclist jumping through the air in front of a large crowd.	the person is riding a horse.
 contradiction	a pale dog runs down a path.	a dog is laying down inside.
@@ -8861,8 +8855,7 @@ neutral	man working behind a watch repair booth on the street.	a man is painting
 neutral	a group at an outdoor party includes a man wearing camouflage pants with neon orange boots and suspenders.	the group is wearing bright clothing.
 entailment	a group at an outdoor party includes a man wearing camouflage pants with neon orange boots and suspenders.	the group at the party is outside.
 contradiction	a group at an outdoor party includes a man wearing camouflage pants with neon orange boots and suspenders.	the group is inside the recording studio.
-entailment	this car is leaving a dust trail as it travels along a dirt road in a wooded area.	a car is traveling along a dirt road.
--	this car is leaving a dust trail as it travels along a dirt road in a wooded area.	a car is leaving a dust trail on a derby car race.
+entailment	this car is leaving a dust trail as it travels along a dirt road in a wooded area.	a car is traveling along a dirt road.	this car is leaving a dust trail as it travels along a dirt road in a wooded area.	a car is leaving a dust trail on a derby car race.
 contradiction	this car is leaving a dust trail as it travels along a dirt road in a wooded area.	a car is sitting in the shop, waiting for a mechanic to fix a part.
 neutral	a band of people playing brass instruments is performing outside.	a jazz funeral is taking place.
 contradiction	a band of people playing brass instruments is performing outside.	a barbershop singing group is performing at a gymnasium.
@@ -8936,8 +8929,7 @@ neutral	a group of people engaged in some sort of outdoor gathering or ritual.	p
 neutral	a small group of young black men, some in traditional african dress, are assembled outdoors.	they are performing a religious ceremony.
 entailment	a small group of young black men, some in traditional african dress, are assembled outdoors.	some black men are outdoors.
 contradiction	a small group of young black men, some in traditional african dress, are assembled outdoors.	the men are playing ice hockey.
-contradiction	two men dressed in identical white jackets with green numbers and logo are studying something on a cellphone with great interest, while other men, identically dressed and standing in a group with these two, are interested in something to their right.	three men in short sleeved shirts are cheering for a bike race.
--	two men dressed in identical white jackets with green numbers and logo are studying something on a cellphone with great interest, while other men, identically dressed and standing in a group with these two, are interested in something to their right.	three men in matching white jackets are standing together, two looking at a cellphone, one looking at something else.
+contradiction	two men dressed in identical white jackets with green numbers and logo are studying something on a cellphone with great interest, while other men, identically dressed and standing in a group with these two, are interested in something to their right.	three men in short sleeved shirts are cheering for a bike race.	two men dressed in identical white jackets with green numbers and logo are studying something on a cellphone with great interest, while other men, identically dressed and standing in a group with these two, are interested in something to their right.	three men in matching white jackets are standing together, two looking at a cellphone, one looking at something else.
 neutral	two men dressed in identical white jackets with green numbers and logo are studying something on a cellphone with great interest, while other men, identically dressed and standing in a group with these two, are interested in something to their right.	three men in matching jackets are standing together, one looking at a nearby person, the other two looking at a phone.
 contradiction	a busy kitchen preparing for the afternoon rush.	they are on motorcycles.
 neutral	a busy kitchen preparing for the afternoon rush.	they are cooking.
@@ -8990,8 +8982,7 @@ entailment	two people here are wearing something around their necks.	people are 
 neutral	man reading a book while working as a street vendor.	a man reads a book about sports while working.
 neutral	man reading a book while working as a street vendor.	a man takes a break from his job to read.
 contradiction	man reading a book while working as a street vendor.	a man flies a kite.
-entailment	a woman is riding a bike as a child rides on the back of the bike.	a woman is riding a bike as a kid rides on the back.
--	a woman is riding a bike as a child rides on the back of the bike.	a woman is flying on a bike with a child on the back.
+entailment	a woman is riding a bike as a child rides on the back of the bike.	a woman is riding a bike as a kid rides on the back.	a woman is riding a bike as a child rides on the back of the bike.	a woman is flying on a bike with a child on the back.
 contradiction	a woman is riding a bike as a child rides on the back of the bike.	a woman is sitting on a bench.
 neutral	seagulls are flying above the crashing waves.	the seagulls are trying to find a place to land after the huge storm.
 entailment	seagulls are flying above the crashing waves.	there are flying animals in this picture.
@@ -9049,8 +9040,7 @@ neutral	two people are walking up a mountain.	two sad people are walking up a mo
 entailment	two people are walking up a mountain.	people are walking up a mountain.
 contradiction	a woman in a striped shirt posing for the camera while another woman holding a drink looks on.	another woman is eating a sandwich.
 neutral	a woman in a striped shirt posing for the camera while another woman holding a drink looks on.	the woman is posing for a magazine.
-entailment	a woman in a striped shirt posing for the camera while another woman holding a drink looks on.	the woman looks on as she holds a drink.
--	a man wearing a horned hat poses for a picture.	a man wearing a horned hat is unwittingly photographed
+entailment	a woman in a striped shirt posing for the camera while another woman holding a drink looks on.	the woman looks on as she holds a drink.	a man wearing a horned hat poses for a picture.	a man wearing a horned hat is unwittingly photographed
 neutral	a man wearing a horned hat poses for a picture.	a man wearing a horned hat smiles and poses for a photograph
 entailment	a man wearing a horned hat poses for a picture.	a man wearing a horned hat poses for a photograph
 neutral	while drinking a coupe of red stripe beers, a man with a gray t-shirt speaks to another man wearing a blue button up shirt.	a man is drinking at a social gathering
@@ -9119,8 +9109,7 @@ neutral	a man speaking or singing into a microphone while playing the piano.	a m
 neutral	a man in a black jacket plays a black electric guitar and sings.	a man is playing whose is in a band is playing an electric guitar.
 contradiction	a man in a black jacket plays a black electric guitar and sings.	a man is playing the drums.
 entailment	a man in a black jacket plays a black electric guitar and sings.	a man is playing on an electric guitar.
-contradiction	a man is photographing a small staked camel and a woman is trying to walk past it.	a man and a woman are riding a camel.
--	a man is photographing a small staked camel and a woman is trying to walk past it.	a man is blocking the path that a woman is trying to walk down while he is trying to take a picture.
+contradiction	a man is photographing a small staked camel and a woman is trying to walk past it.	a man and a woman are riding a camel.	a man is photographing a small staked camel and a woman is trying to walk past it.	a man is blocking the path that a woman is trying to walk down while he is trying to take a picture.
 entailment	a man is photographing a small staked camel and a woman is trying to walk past it.	a man is taking a picture.
 entailment	a girl wearing a maroon shirt leaps into the air while in the woods.	a girl is outdoors.
 contradiction	a girl wearing a maroon shirt leaps into the air while in the woods.	a girl is in bed.
@@ -9243,8 +9232,7 @@ entailment	a guy wearing a black shirt and gray pants pushing his shopping cart 
 contradiction	a guy wearing a black shirt and gray pants pushing his shopping cart past a candy aisle of a walmart.	a man is inside a target.
 neutral	a guy wearing a black shirt and gray pants pushing his shopping cart past a candy aisle of a walmart.	an old man is buying some chocolate.
 entailment	a group of people walking in a line through the snow toward a mountain.	group of people walking  the snow toward a mountain
-contradiction	a group of people walking in a line through the snow toward a mountain.	people running .
--	a group of people walking in a line through the snow toward a mountain.	people walking mountain.
+contradiction	a group of people walking in a line through the snow toward a mountain.	people running .	a group of people walking in a line through the snow toward a mountain.	people walking mountain.
 contradiction	a young boy is pushing someone with a broken foot into the hospital.	the people are going outside.
 neutral	a young boy is pushing someone with a broken foot into the hospital.	the person got hurt playing basketball.
 entailment	a young boy is pushing someone with a broken foot into the hospital.	the people are going inside.
@@ -9478,8 +9466,7 @@ contradiction	an old man and lady in a white uniform is standing next to a man i
 neutral	an old man and lady in a white uniform is standing next to a man in black playing an instrument.	an old man and his nurse are listening to the musician play.
 entailment	a young boy, wearing a helmet, in shorts and a t-shirt and a pair of binoculars around his neck is playing outside.	a boy is outside.
 contradiction	a young boy, wearing a helmet, in shorts and a t-shirt and a pair of binoculars around his neck is playing outside.	the boy has nothing around his neck.
-neutral	a young boy, wearing a helmet, in shorts and a t-shirt and a pair of binoculars around his neck is playing outside.	the boy is near his home.
--	several african american children posing for the camera.	kids doing tricks for a camera.
+neutral	a young boy, wearing a helmet, in shorts and a t-shirt and a pair of binoculars around his neck is playing outside.	the boy is near his home.	several african american children posing for the camera.	kids doing tricks for a camera.
 entailment	several african american children posing for the camera.	kids pose for a camera.
 contradiction	several african american children posing for the camera.	three adults take photos in london at a pub.
 contradiction	a woman get some food from under a blue tent.	the dog is eating a banana
