@@ -69,8 +69,8 @@ def generate_embedding(vocab, dict, initial=False):
                 print >>f, vocab[i]
                 continue
         f.close()
-        ematrix.append([1.] * len(vocab[0]))
         word2id['<unk>'] = len(ematrix)
+        ematrix.append([1.] * len(dict[vocab[0]]))
         with open('data/params/ematrix.pickle', 'wb') as f:
             cPickle.dump(ematrix, f)
         with open('data/params/word2id.pickle', 'wb') as f:
@@ -134,13 +134,59 @@ def file_to_word_ids(file_name, word2id):
                     line_hypo.append(word2id['<unk>'])
             hypoes.append(line_hypo)
 
-    labels = np.asarray(labels, dtype=int)
-    prems = np.asarray(prems, dtype=int)
-    hypoes = np.asarray(hypoes, dtype=int)
+    # labels = np.asarray(labels, dtype=int)
+    # prems = np.asarray(prems, dtype=int)
+    # hypoes = np.asarray(hypoes, dtype=int)
     return labels, prems, hypoes
 
-def data_iterator(file_name):
-    pass
+def data_iterator(data_set, batch_size, unk=28696):
+    labels = data_set[0]
+    prems = data_set[1]
+    hypoes = data_set[2]
+
+    data_num = len(labels)
+    batch_num = data_num // batch_size
+    data_label = []
+    data_prems = []
+    data_hypoes = []
+
+    for i in xrange(batch_num + 1):
+        this_batch_size = min(batch_size, data_num - i * batch_size)
+        b_data_label = np.zeros((this_batch_size, 1), dtype=int)
+
+        max_prem_len = 0
+        for ii in xrange(this_batch_size):
+            if len(prems[i * batch_size + ii]) > max_prem_len:
+                max_prem_len = len(prems[i * batch_size + ii])
+        b_data_prems = np.zeros((this_batch_size, max_prem_len), dtype=int)
+
+        max_hypo_len = 0
+        for ii in xrange(this_batch_size):
+            if len(hypoes[i * batch_size + ii]) > max_hypo_len:
+                max_hypo_len = len(hypoes[i * batch_size + ii])
+        b_data_hypoes = np.zeros((this_batch_size, max_hypo_len), dtype=int)
+
+        for ii in xrange(this_batch_size):
+            b_data_label[ii] = labels[i * batch_size + ii]
+            if len(prems[i * batch_size + ii]) < len(b_data_prems[ii]):
+                b_data_prems[ii][:len(prems[i * batch_size + ii])] = prems[i * batch_size + ii]
+                b_data_prems[ii][len(prems[i * batch_size + ii]):] = [unk] * (len(b_data_prems[ii]) - len(prems[i * batch_size + ii]))
+            else:
+                b_data_prems[ii] = prems[i * batch_size + ii]
+                
+            if len(hypoes[i * batch_size + ii]) < len(b_data_hypoes[ii]):
+                b_data_hypoes[ii][:len(hypoes[i * batch_size + ii])] = hypoes[i * batch_size + ii]
+                b_data_hypoes[ii][len(hypoes[i * batch_size + ii]):] = [unk] * (len(b_data_hypoes[ii]) - len(hypoes[i * batch_size + ii]))
+            else:
+                b_data_hypoes[ii] = hypoes[i * batch_size + ii]
+
+        data_label.append(np.asarray(b_data_label))
+        data_prems.append(np.asarray(b_data_prems))
+        data_hypoes.append(np.asarray(b_data_hypoes))
+
+
+    for i in xrange(batch_size + 1):
+        yield data_label[i], data_prems[i], data_hypoes[i]
 
 if __name__ == '__main__':
     # data_file = 'data/bak/snli_1.0_test.txt'
@@ -150,8 +196,8 @@ if __name__ == '__main__':
     # vocab = build_vocab(text_file, initial=True)
     ##########################################################################
 
-    # dict_file = 'data/embedding/word2v100.pickle'
-    # dict = load_ny_dict(dict_file)
+    dict_file = 'data/embedding/word2v100.pickle'
+    dict = load_ny_dict(dict_file)
     vocab_file = 'data/params/vocab.pickle'
     vocab = build_vocab(vocab_file)
     print len(vocab)
@@ -159,9 +205,10 @@ if __name__ == '__main__':
     ematrix_file ='data/params/ematrix.pickle'
     word2id_file = 'data/params/word2id.pickle'
     ematrix, word2id = generate_embedding(ematrix_file, word2id_file)
+    # ematrix, word2id = generate_embedding(vocab, dict, initial=True)
 
     test_text = 'data/test.txt'
     test_set = file_to_word_ids(test_text, word2id)
-    print test_set[0]
-    print test_set[1]
-    print test_set[2]
+#
+    for label, prem, hypo in data_iterator(test_set, 12):
+        print label.shape, prem.shape, hypo.shape
