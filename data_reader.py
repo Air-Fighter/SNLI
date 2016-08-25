@@ -1,6 +1,7 @@
 import cPickle
 import nltk
 import numpy as np
+import theano
 
 def load_ny_dict(file):
     """
@@ -81,6 +82,8 @@ def generate_embedding(vocab, dict, initial=False):
         with open(dict, 'rb') as f:
             word2id = cPickle.load(f)
 
+    ematrix = np.asarray(ematrix, dtype=theano.config.floatX)
+
     return ematrix, word2id
 
 def pure(file_name, out_file_name):
@@ -106,9 +109,19 @@ def pure(file_name, out_file_name):
             print >>f, labels[i]+'\t'+prems[i]+'\t'+hypos[i]
 
 def file_to_word_ids(file_name, word2id):
+    """
+    Transform the text file into three lists (labels, prems, hypoes) based on the dictionary word2id
+    :param file_name: the file that needs to be transformed
+    :param word2id: dictionary, word->id
+    :return: three lists labels, prems, hypoes
+    """
     labels = []
     prems = []
     hypoes = []
+
+    print '...loading data from ' + file_name
+
+    keys = word2id.keys()
 
     with open(file_name, 'r') as f:
         for line in f:
@@ -120,7 +133,7 @@ def file_to_word_ids(file_name, word2id):
 
             line_prem = []
             for word in nltk.word_tokenize(prem.strip()):
-                if word in word2id.keys():
+                if word in keys:
                     line_prem.append(word2id[word])
                 else:
                     line_prem.append(word2id['<unk>'])
@@ -128,87 +141,104 @@ def file_to_word_ids(file_name, word2id):
 
             line_hypo = []
             for word in nltk.word_tokenize(hypo.strip()):
-                if word in word2id.keys():
+                if word in keys:
                     line_hypo.append(word2id[word])
                 else:
                     line_hypo.append(word2id['<unk>'])
             hypoes.append(line_hypo)
 
-    # labels = np.asarray(labels, dtype=int)
-    # prems = np.asarray(prems, dtype=int)
-    # hypoes = np.asarray(hypoes, dtype=int)
     return labels, prems, hypoes
 
-def data_iterator(data_set, batch_size, unk=28696):
-    labels = data_set[0]
-    prems = data_set[1]
-    hypoes = data_set[2]
+def prepare_data(labels, prems, hypoes):
+    """Create the matrices from the datasets.
 
-    data_num = len(labels)
-    batch_num = data_num // batch_size
-    data_label = []
-    data_prems = []
-    data_hypoes = []
+    This pad each sequence to the same lenght: the lenght of the
+    longuest sequence or maxlen.
 
-    for i in xrange(batch_num + 1):
-        this_batch_size = min(batch_size, data_num - i * batch_size)
-        b_data_label = np.zeros((this_batch_size, 1), dtype=int)
+    if maxlen is set, we will cut all sequence to this maximum
+    lenght.
+    """
+    # p: a list of premises
+    # h: a list of hypothesises
+    p_lengths = [len(p) for p in prems]
+    h_lengths = [len(h) for h in hypoes]
 
-        max_prem_len = 0
-        for ii in xrange(this_batch_size):
-            if len(prems[i * batch_size + ii]) > max_prem_len:
-                max_prem_len = len(prems[i * batch_size + ii])
-        b_data_prems = np.zeros((this_batch_size, max_prem_len), dtype=int)
+    n_samples = len(prems)
+    p_maxlen = np.max(p_lengths)
+    h_maxlen = np.max(h_lengths)
 
-        max_hypo_len = 0
-        for ii in xrange(this_batch_size):
-            if len(hypoes[i * batch_size + ii]) > max_hypo_len:
-                max_hypo_len = len(hypoes[i * batch_size + ii])
-        b_data_hypoes = np.zeros((this_batch_size, max_hypo_len), dtype=int)
+    p = np.zeros((n_samples, p_maxlen)).astype('int32')
+    p_mask = np.zeros((n_samples, p_maxlen)).astype(theano.config.floatX)
+    for idx, s in enumerate(prems):
+        p[idx, :p_lengths[idx]] = s
+        p_mask[idx, :p_lengths[idx]] = 1.
 
-        for ii in xrange(this_batch_size):
-            b_data_label[ii] = labels[i * batch_size + ii]
-            if len(prems[i * batch_size + ii]) < len(b_data_prems[ii]):
-                b_data_prems[ii][:len(prems[i * batch_size + ii])] = prems[i * batch_size + ii]
-                b_data_prems[ii][len(prems[i * batch_size + ii]):] = [unk] * (len(b_data_prems[ii]) - len(prems[i * batch_size + ii]))
-            else:
-                b_data_prems[ii] = prems[i * batch_size + ii]
-                
-            if len(hypoes[i * batch_size + ii]) < len(b_data_hypoes[ii]):
-                b_data_hypoes[ii][:len(hypoes[i * batch_size + ii])] = hypoes[i * batch_size + ii]
-                b_data_hypoes[ii][len(hypoes[i * batch_size + ii]):] = [unk] * (len(b_data_hypoes[ii]) - len(hypoes[i * batch_size + ii]))
-            else:
-                b_data_hypoes[ii] = hypoes[i * batch_size + ii]
+    h = np.zeros((n_samples, h_maxlen)).astype('int32')
+    h_mask = np.zeros((n_samples, h_maxlen)).astype(theano.config.floatX)
+    for idx, s in enumerate(hypoes):
+        h[idx, :h_lengths[idx]] = s
+        h_mask[idx, :h_lengths[idx]] = 1.
 
-        data_label.append(np.asarray(b_data_label))
-        data_prems.append(np.asarray(b_data_prems))
-        data_hypoes.append(np.asarray(b_data_hypoes))
+    labels = np.asarray(labels, dtype='int32')
 
+    return labels, p, p_mask, h, h_mask
 
-    for i in xrange(batch_size + 1):
-        yield data_label[i], data_prems[i], data_hypoes[i]
+initialized = False
+train_labels = []
+train_prems = []
+train_hypoes = []
+test_labels = []
+test_prems = []
+test_hypoes = []
+ematrix = None
+
+def snli_iterator(batch_size, train_text='data/train.txt', test_text='data/test.txt', is_train=True):
+    global initialized
+    global train_labels
+    global train_prems
+    global train_hypoes
+    global test_labels
+    global test_prems
+    global test_hypoes
+    global ematrix
+
+    if not initialized:
+        print '...initializing datasets'
+        with open('data/snli.pickle', 'rb') as f:
+            datasets = cPickle.load(f)
+        train_labels, train_prems, train_hypoes = datasets[0]
+        test_labels, test_prems, test_hypoes = datasets[1]
+
+        # following code is initialized datasets
+        # ematrix, word2id = generate_embedding(vocab='data/params/ematrix.pickle', dict='data/params/word2id.pickle')
+        # train_labels, train_prems, train_hypoes = file_to_word_ids(train_text, word2id)
+        # test_labels, test_prems, test_hypoes = file_to_word_ids(test_text, word2id)
+        # train_sets = [train_labels, train_prems, train_hypoes]
+        # test_sets = [test_labels, test_prems, test_hypoes]
+        # print '...saving corpus to data/snli.pickle'
+        # with open('data/snli.pickle', 'wb') as f:
+        #     cPickle.dump([train_sets, test_sets], f)
+
+        initialized = True
+
+    if is_train:
+        batch_num = len(train_labels) / batch_size
+        for i in xrange(batch_num):
+            yield prepare_data(train_labels[i * batch_size : (i + 1) * batch_size],
+                               train_prems[i * batch_size : (i + 1) * batch_size],
+                               train_hypoes[i * batch_size : (i + 1) * batch_size])
+    else:
+        batch_num = len(test_labels) / batch_size
+        for i in xrange(batch_num):
+            yield prepare_data(test_labels[i * batch_size: (i + 1) * batch_size],
+                               test_prems[i * batch_size: (i + 1) * batch_size],
+                               test_hypoes[i * batch_size: (i + 1) * batch_size])
 
 if __name__ == '__main__':
-    # data_file = 'data/bak/snli_1.0_test.txt'
-    # out_file = 'data/test.txt'
-    # pure(data_file, out_file)
-    # text_file = 'data/all.txt'
-    # vocab = build_vocab(text_file, initial=True)
-    ##########################################################################
-
-    dict_file = 'data/embedding/word2v100.pickle'
-    dict = load_ny_dict(dict_file)
-    vocab_file = 'data/params/vocab.pickle'
-    vocab = build_vocab(vocab_file)
-    print len(vocab)
-
-    ematrix_file ='data/params/ematrix.pickle'
-    word2id_file = 'data/params/word2id.pickle'
-    ematrix, word2id = generate_embedding(ematrix_file, word2id_file)
-    # ematrix, word2id = generate_embedding(vocab, dict, initial=True)
-
-    test_text = 'data/test.txt'
-    test_set = file_to_word_ids(test_text, word2id)
-#
-    for label, prem, hypo in data_iterator(test_set, 12):
-        print label.shape, prem.shape, hypo.shape
+    for l, p, p_m, h, h_m in snli_iterator(12):
+        print l
+        print p
+        print p_m
+        print h
+        print h_m
+        exit(0)
