@@ -3,12 +3,13 @@ import theano.tensor as T
 from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
 import numpy as np
 
+
 def numpy_floatX(data):
     return np.asarray(data, dtype=theano.config.floatX)
 
+
 class LogisticRegression(object):
     def __init__(self, x, y, in_size, out_size, prefix='lr_'):
-
         self.W = theano.shared(
             value=np.random.uniform(
                 low=-np.sqrt(6. / (in_size + out_size)),
@@ -37,7 +38,8 @@ class LogisticRegression(object):
 
         self.error = T.mean(T.neq(self.y_d, y))
 
-        self.params = {prefix+'W':self.W, prefix+'b':self.b}
+        self.params = {prefix + 'W': self.W, prefix + 'b': self.b}
+
 
 class Embedding_layer_uniEmb(object):
     def __init__(self, x, emb, word_size=100, prefix='embedd_layer_'):
@@ -49,6 +51,7 @@ class Embedding_layer_uniEmb(object):
         self.output = emb[self.x.flatten()].reshape([n_steps, n_samples, word_size])
 
         self.params = {}
+
 
 class Embedding_layer(object):
     def __init__(self, x, emb, word_size=100, prefix='embedd_layer_'):
@@ -69,11 +72,13 @@ class Embedding_layer(object):
 
         self.output = self.emb[self.x.flatten()].reshape([n_steps, n_samples, word_size])
 
-        self.params = {prefix+'emb':self.emb}
+        self.params = {prefix + 'emb': self.emb}
+
 
 class LSTM_layer(object):
     def __init__(self, x, mask=None, in_size=100, hidden_size=400, mean_pooling=True, prefix='lstm_'):
         """attention, every column in input is a sample"""
+
         def random_weights(x_dim, y_dim):
             return np.random.uniform(
                 low=-np.sqrt(6. / (x_dim + y_dim)),
@@ -89,7 +94,7 @@ class LSTM_layer(object):
                  random_weights(in_size, hidden_size)],
                 axis=1
             ).astype(theano.config.floatX),
-            name=prefix+'W',
+            name=prefix + 'W',
             borrow=True
         )
 
@@ -101,13 +106,13 @@ class LSTM_layer(object):
                  random_weights(hidden_size, hidden_size)],
                 axis=1
             ).astype(theano.config.floatX),
-            name=prefix+'U',
+            name=prefix + 'U',
             borrow=True
         )
 
         self.b = theano.shared(
             value=np.zeros((4 * hidden_size,)).astype(theano.config.floatX),
-            name=prefix+'b',
+            name=prefix + 'b',
             borrow=True
         )
 
@@ -147,7 +152,7 @@ class LSTM_layer(object):
                                     sequences=[mask, input],
                                     outputs_info=[T.alloc(numpy_floatX(0.), n_samples, hidden_size),
                                                   T.alloc(numpy_floatX(0.), n_samples, hidden_size)],
-                                    name=prefix+'_scan',
+                                    name=prefix + '_scan',
                                     n_steps=n_steps)
 
         if mean_pooling:
@@ -157,7 +162,8 @@ class LSTM_layer(object):
             self.output = rval[0][-1, :, :]
             self.out_all = rval[0]
 
-        self.params  = {prefix+'W' : self.W, prefix+'U': self.U, prefix+'b': self.b}
+        self.params = {prefix + 'W': self.W, prefix + 'U': self.U, prefix + 'b': self.b}
+
 
 class Dropout_layer(object):
     def __init__(self, x, p=0.5):

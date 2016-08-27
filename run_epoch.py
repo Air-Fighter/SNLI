@@ -40,6 +40,7 @@ def run_epoch():
     f_grad_shared, f_update = optimizer(lr, model.params, grads, [l, p, p_mask, h, h_mask], cost)
 
     detector = theano.function(inputs=[l, p, p_mask, h, h_mask], outputs=model.error)
+    predictor = theano.function(inputs=[p, p_mask, h, h_mask], outputs=[model.output, model.p_d])
 
     # load parameters from specified file
     if not options['loaded_params'] is None:
@@ -53,8 +54,14 @@ def run_epoch():
 
     # test the performance of initialized parameters
     errors = []
+    flag = True
     for l_, p_, p_mask_, h_, h_mask_ in snli_iterator(batch_size=options['valid_batch_size'], is_train=False):
         error = detector(l_, p_, p_mask_, h_, h_mask_)
+        if flag:
+            print '\t\t', l_
+            print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[0]
+            #print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[1]
+            flag = False
         errors.append(error)
     print 'test error of random initialized parameters: ' + str(np.mean(errors) * 100) + '%'
 
@@ -77,26 +84,36 @@ def run_epoch():
         if (i + 1) % options['valid_freq'] == 0:
             # test performance on train set
             errors = []
+            flag = True
             for l_, p_, p_mask_, h_, h_mask_ in snli_iterator(batch_size=options['valid_batch_size'], is_train=True):
                 error = detector(l_, p_, p_mask_, h_, h_mask_)
+                if flag:
+                    print '\t\t', l_
+                    print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[0]
+                    #print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[1]
+                    flag = False
                 errors.append(error)
             print '\ttrain error of epoch ' + str(i) + ': ' + str(np.mean(errors) * 100) + '%'
 
             # test performance on test set
             errors = []
+            flag = True
             for l_, p_, p_mask_, h_, h_mask_ in snli_iterator(batch_size=options['valid_batch_size'], is_train=False):
                 error = detector(l_, p_, p_mask_, h_, h_mask_)
+                if flag:
+                    print '\t\t', l_
+                    print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[0]
+                    #print '\t\t', predictor(p_, p_mask_, h_, h_mask_)[1]
+                    flag = False
                 errors.append(error)
             print '\ttest error of epoch ' + str(i) + ': ' + str(np.mean(errors) * 100) + '%',
 
             # judge whether it's necessary to save the parameters
             save = False
             if np.mean(errors) * 100 < best_perform:
-                best_perform = np.mean(errors)
+                best_perform = np.mean(errors) * 100
                 save = True
                 print 'best through: ' + str(best_perform)
-            elif best_perform == np.inf:
-                print 'best through: inf'
             else:
                 print 'best through: ' + str(best_perform)
 

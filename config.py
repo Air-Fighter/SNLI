@@ -17,15 +17,15 @@ options = OrderedDict(
     {
         'model': models.LSTM_LR_model, # define the model
         'word_size': 100,  # input dimension
-        'hidden_size': 1000,  # number of hidden units in single layer
-        'out_size': 2,  # number of units in output layer
+        'hidden_size': 400,  # number of hidden units in single layer
+        'out_size': 3,  # number of units in output layer
         'patience': 10,  # Number of epoch to wait before early stop if no progress
         'max_epochs': 1000,  # The maximum number of epoch to run
-        'lrate': 0.1,  # Learning rate for sgd (not used for adadelta and rmsprop)
+        'lrate': 1,  # Learning rate for sgd (not used for adadelta and rmsprop)
         'optimizer': optimizers.adadelta,  # sgd, adadelta and rmsprop available, sgd very hard to use, not recommanded (probably need momentum and decaying learning rate).
-        'valid_freq': 5,  # Compute the validation error after this number of update.
+        'valid_freq': 1,  # Compute the validation error after this number of update.
         'maxlen': 100,  # Sequence longer then this get ignored
-        'batch_size': 1800,  # The batch size during training.
+        'batch_size': 3000,  # The batch size during training.
         'valid_batch_size': 20,  # The batch size used for validation/test set.
         'dataset': 'gkhmc',
         'param_path': 'data/',  # path to save parameters
